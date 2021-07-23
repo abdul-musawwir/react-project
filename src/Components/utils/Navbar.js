@@ -1,7 +1,10 @@
 import React,{useState} from 'react'
+import { useHistory } from 'react-router-dom';
 
 const Navbar = () => {
     const [message,setMessage] = useState(null);
+    const history = useHistory();
+
     return(
         <>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,6 +27,7 @@ const Navbar = () => {
                 </a>
                 </li>
                 </ul>
+                <a classname="logout-btn" style={{backgroundColor:"#212529",color:"rgba(255,255,255,.55)",paddingRight:"30px"}} href='/'>Logout</a>
             </div>
         </div>
         </nav>

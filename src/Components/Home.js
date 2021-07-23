@@ -4,8 +4,8 @@ import './Home.css'
 const Home = () => {
     return(
         <>
-        <div class="container"  > 
-        <img id = "image" alt="bg-image" src="/logo.png"/>
+        <div class="container-bg"  > 
+        <img id = "image" class="image" alt="bg-crescent" src="/logo.png"/>
         <button id ="btn" className = " container-fluid" onclick="" > 
             Start <br/> Scanning 
         </button>  
