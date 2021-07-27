@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import Contact from "../Contact"
+import axios from "axios";
+import {SERVER_IP} from "../constants"
 
 const videoConstraints = {
     width: 1280,
@@ -18,6 +20,14 @@ const videoConstraints = {
       () => {
         const imageSrc = webcamRef.current.getScreenshot();
         setImage(imageSrc)
+        axios.post("http://"+SERVER_IP+":5000/visitor", {
+            'image' : imageSrc
+        }).then(res => {
+            alert("successfully inserted");
+        }).catch(err => {
+            console.log(err);
+            alert("error bois" + err);
+        });
       },
       [webcamRef]
     );
