@@ -14,7 +14,7 @@ const Contact = (props) => {
         class="form-image" 
         style={{ float:"right",paddingLeft: "250px", paddingRight: "200px", paddingTop: "20px"}}
     >
-            <img  src="./CNIC.png"  style={{width:"200px",height:"150px"}} />
+            <img  src={props.image}  style={{width:"200px",height:"150px"}} />
     </div>
     <br/><br/><br/><br/><br/><br/>
   {/* {% csrf_token %} */}
@@ -41,7 +41,7 @@ const Contact = (props) => {
   </div>
   <div class="mb-3" style={{paddingLeft: "250px", paddingRight: "200px"}}>
     <label for="Check-In" class="form-label"><b>Check-In Date and Time</b></label>
-    <input type="datetime-local" class="form-control" id="Check-In" name="Check-In" placeholder="Enter Your Check-In Date Here"/>
+    <input type="datetime-local" onChange={(e)=>{console.log(e.target.value)}} class="form-control" id="Check-In" name="Check-In" placeholder="Enter Your Check-In Date Here"/>
   </div>
   <div class="mb-3" style={{paddingLeft: "250px", paddingRight: "200px"}}>
     <label for="Check-Out" class="form-label"><b>Check-Out Date and Time</b></label>

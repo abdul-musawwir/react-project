@@ -7,6 +7,7 @@ import Contact from './Components/Contact'
 import Services from './Components/Services'
 import './App.css';
 import Navbar from './Components/utils/Navbar';
+import ShowResult from './Components/ShowResult';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/about'><Navbar/><About/></Route>
           <Route path='/contact'><Navbar/><Contact/></Route>
           <Route path='/services'><Navbar/><Services/></Route>
+          <Route path='/showresults'><Navbar/><ShowResult/></Route>
         </Switch>
       </BrowserRouter>
     </div>

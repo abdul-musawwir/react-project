@@ -21,11 +21,11 @@ const Navbar = () => {
                 <li class="nav-item">
                 <a class="nav-link" href="/about">Search</a>
                 </li>
-                <li class="nav-item">
+                {/* <li class="nav-item">
                 <a class="nav-link" href="/services">
                     Report Generation
                 </a>
-                </li>
+                </li> */}
                 </ul>
                 <a classname="logout-btn" style={{backgroundColor:"#212529",color:"rgba(255,255,255,.55)",paddingRight:"30px"}} href='/'>Logout</a>
             </div>
