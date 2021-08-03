@@ -26,13 +26,14 @@ const ShowResult = (props)=>{
                 result.name,
                 result.cnic,
                 result.address,
-                result.organization_name,
-                result.contact,
-                // result.Check-In_Date,
+                result.name_of_organization,
+                result.contact_number,
+                result.check_in_date,
                 // result.Check-Out_Date,
-                result.Contact_Person,
-                result.Visit_Purpose,
-                result.Image_Location,
+                result.contact_person,
+                result.contact_purpose,
+                result.person_image,
+                result.cnic_image,
                 "\n\n"]
                 // console.log(result)
         }
@@ -63,13 +64,14 @@ const ShowResult = (props)=>{
                             <p>{result.name}</p>
                             <p>{result.cnic}</p>
                             <p>{result.address}</p>
-                            <p>{result.organization_name}</p>
-                            <p>{result.contact}</p>
-                            {/* <p>{result.Check-In_Date}</p>
-                            <p>{result.Check-Out_Date}</p> */}
-                            <p>{result.Contact_Person}</p>
-                            <p>{result.Visit_Purpose}</p>
-                            <p>{result.Image_Location}</p>
+                            <p>{result.name_of_organization}</p>
+                            <p>{result.contact_number}</p>
+                            <p>{result.check_in_date}</p>
+                            {/* <p>{result.Check-Out_Date}</p> */}
+                            <p>{result.contact_person}</p>
+                            <p>{result.contact_purpose}</p>
+                            <p><img src={result.cnic_image} alt="cnic image"/></p>
+                            <p><img src={result.person_image} alt="person image"/></p>
                             <p/>
                         </div>
                     ))

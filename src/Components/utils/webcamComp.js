@@ -15,28 +15,51 @@ const videoConstraints = {
     const webcamRef = React.useRef(null);
 
     const [image, setImage] = useState()
+    const [data, setData] = useState(null)
   
-    const capture = React.useCallback(
+    const captureUrdu = React.useCallback(
       () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        setImage(imageSrc)
-        axios.post("http://"+SERVER_IP+":5000/visitor", {
+        
+        axios.post("http://"+SERVER_IP+":5000/image_urdu", {
             'image' : imageSrc
         }).then(res => {
-            alert("successfully inserted");
+            console.log("successfully inserted");
+            // console.log(res.data)
+            setData(res.data)
         }).catch(err => {
             console.log(err);
-            alert("error bois" + err);
+            console.log("error bois" + err);
         });
+        setImage(imageSrc)
       },
       [webcamRef]
     );
 
-    useEffect(()=>{
-        console.log(image)
-    },[image])
+    const captureEnglish = React.useCallback(
+      () => {
+        const imageSrc = webcamRef.current.getScreenshot();
+        
+        axios.post("http://"+SERVER_IP+":5000/image_english", {
+            'image' : imageSrc
+        }).then(res => {
+          console.log("successfully inserted");
+          // console.log(res.data)
+          setData(res.data)
+        }).catch(err => {
+            console.log(err);
+            console.log("error bois" + err);
+        });
+        setImage(imageSrc)
+      },
+      [webcamRef]
+    );
+
+    // useEffect(()=>{
+    //     console.log(data)
+    // },[data])
   
-    return (image?<Contact image={image}/>:<>
+    return (image && data?<Contact image={image} data={data} />:<>
         <Webcam
           audio={false}
           height={500}
@@ -45,7 +68,8 @@ const videoConstraints = {
           width={700}
           videoConstraints={videoConstraints}
         />
-        <button onClick={capture}>Capture photo</button>
+        <button onClick={captureEnglish}>Capture english photo</button>
+        <button onClick={captureUrdu}>Capture urdu photo</button>
         <a href="/contact"><button >Skip</button></a>
       </>
     );
