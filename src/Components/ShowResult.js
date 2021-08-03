@@ -32,8 +32,8 @@ const ShowResult = (props)=>{
                 // result.Check-Out_Date,
                 result.contact_person,
                 result.contact_purpose,
-                result.person_image,
-                result.cnic_image,
+                // result.person_image,
+                // result.cnic_image,
                 "\n\n"]
                 // console.log(result)
         }
