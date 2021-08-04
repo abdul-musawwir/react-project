@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import Contact from "../Contact"
 import axios from "axios";
 import {SERVER_IP} from "../constants"
+import { useHistory } from "react-router-dom";
 
 const videoConstraints = {
     width: 1280,
@@ -12,6 +13,8 @@ const videoConstraints = {
 
 
   const WebcamCapture = () => {
+
+    const history = useHistory()
     const webcamRef = React.useRef(null);
 
     const [image, setImage] = useState()
@@ -55,11 +58,14 @@ const videoConstraints = {
       [webcamRef]
     );
 
-    // useEffect(()=>{
-    //     console.log(data)
-    // },[data])
+    useEffect(()=>{
+        console.log(data)
+        if(image && data){
+          history.push('/contact',{image:image,data:data})
+        }
+    },[data,image])
   
-    return (image && data?<Contact image={image} data={data} />:<>
+    return (<>
         <Webcam
           audio={false}
           height={500}
