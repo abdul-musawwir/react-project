@@ -2,38 +2,41 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import axios from 'axios'
 import { SERVER_IP } from './constants'
-import "./Contact.css"
+import "./Entry.css"
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import CancelIcon from '@material-ui/icons/Cancel';
+import WebcamCapture from './utils/webcamComp'
+import InputMask from 'react-input-mask'
 
-const Contact = (props) => {
-  const location = useLocation()
+const Entry = (props) => {
+  // const location = useLocation()
   const history = useHistory()
-  const [PropName,setPropName] = useState(location.state.data.name)
-  const [cnic,setCnic] = useState(location.state.data.cnic)
-  const [address,setAddress] = useState()
-  const [NoOrg,setNoOrg] = useState()
-  const [contactNo,setContactNo] = useState()
-  const [checkIn,setCheckIn] = useState()
-  const [contactPer,setcontactPer] = useState()
-  const [purpose,setPurpose] = useState()
+  const [PropName,setPropName] = useState(null)
+  const [cnic,setCnic] = useState(null)
+  const [perCount,setPerCount] = useState(null)
+  const [NoOrg,setNoOrg] = useState(null)
+  const [contactNo,setContactNo] = useState(null)
+  const [checkIn,setCheckIn] = useState(null)
+  const [checkOut,setCheckOut] = useState(null)
+  const [contactPer,setcontactPer] = useState(null)
+  const [purpose,setPurpose] = useState(null)
+  const [picture,setPicture] = useState(null)
+  
 
   const clickHandler = () => {
     axios.post("http://"+SERVER_IP+":5000/data_handling", {
       "name":PropName,
       "cnic":cnic,
-      "address":address,
-      "name_of_organization":NoOrg,
-      "contact_number" : contactNo,
-      "check_in_date" : moment().format().slice(0,-15),
-      "contact_person" : contactPer,
-      "contact_purpose" : purpose,
-      "cnic_image" : location.state.image,
-      "person_image" : location.state.data.image
+      "Person_Count":perCount,
+      "organization_name":NoOrg,
+      "contact" : contactNo,
+      "Check_In_Date" : moment().format().slice(0,-6),
+      "Check_Out_Date" : "",
+      "Contact_Person" : contactPer,
+      "Visit_Purpose" : purpose,
+      "picture" : picture,
+      
     }).then(res => {
-      // console.log(res.data.result)
-      // setResult(res.data.result)
-
       console.log("successful")
   }).catch(err => {
       console.log(err);
@@ -42,24 +45,22 @@ const Contact = (props) => {
     let data = {
       "name":PropName,
       "cnic":cnic,
-      "address":address,
+      "person_count":perCount,
       "name_of_organization":NoOrg,
       "contact_number" : contactNo,
-      "check_in_date" : moment().format().slice(0,-15),
+      "check_in_datetime" : moment().format().slice(0,-6),
+      "check_out_datetime" : "",
       "contact_person" : contactPer,
       "contact_purpose" : purpose,
-      "cnic_image" : location.state.image,
-      "person_image" : location.state.data.image
+      "picture" : picture,
     }
     console.log(data)
   }
 
+ 
 
 
-  useEffect(()=>{
-    console.log(location.state.image)
-    console.log(location.state.data.image)
-  },[])
+
     return(
         <div className="maincontainer" >
 
@@ -69,12 +70,11 @@ const Contact = (props) => {
 
 <div class = "container" >
 {/* <form method="post" action="/contact"> */}
-    <div 
+    {/* <div 
         class="form-image" 
     >
             <img  src={location.state.image}  style={{width:"200px",height:"150px"}} />
-    </div>
-    <br/><br/><br/><br/><br/><br/>
+    </div> */}
   {/* {% csrf_token %} */}
   <div class="mb-3" style={{ paddingTop: "20px"}}>
     <label for="Name" class="form-label"><b>Visitor Name</b></label>
@@ -83,11 +83,12 @@ const Contact = (props) => {
   </div>
   <div class="mb-3" >
     <label for="cnic" class="form-label"><b>Cnic</b></label>
-    <input type="text" value={cnic} onChange={e=>setCnic(e.target.value)} class="form-control" id="cnic" name="cnic" placeholder="Enter Your cnic Here"/>
+    {/* <input type="text" value={cnic} onChange={handleCnic(e)} class="form-control" id="cnic" name="cnic" placeholder="Enter Your cnic Here"/> */}
+    <InputMask mask="99999-9999999-9" className="form-control" maskChar={null}  onChange={(e)=>{setCnic(e.target.value)}}  placeholder="Enter Your cnic Here"/>
   </div>
   <div class="mb-3" >
-    <label for="Address" class="form-label"><b>Address</b></label>
-    <input type="text" onChange={e=>setAddress(e.target.value)} class="form-control" id="Address" name="Address" placeholder="Enter Your Address Here"/>
+    <label for="Person_Count" class="form-label"><b>Person Count</b></label>
+    <input type="text" onChange={e=>setPerCount(e.target.value)} class="form-control" id="Address" name="Address" placeholder="Enter Person Count Here"/>
   </div>
   <div class="mb-3" >
     <label for="Organization" class="form-label"><b>Name of Organization</b></label>
@@ -99,7 +100,11 @@ const Contact = (props) => {
   </div>
   <div class="mb-3" >
     <label for="Check-In" class="form-label"><b>Check-In Date</b></label>
-    <input type="date-local" value={moment().format().slice(0,-15)} class="form-control" id="Check-In" name="Check-In" placeholder="Enter Your Check-In Date Here" readOnly/>
+    <input type="datetime-local" value={moment().format().slice(0,-6)} class="form-control" id="Check-In" name="Check-In" placeholder="Enter Your Check-In Date Here" readOnly/>
+  </div>
+  <div class="mb-3" >
+    <label for="Check-Out" class="form-label"><b>Check-Out Date</b></label>
+    <input type="datetime-local" class="form-control" id="Check-In" name="Check-In" placeholder="Enter Your Check-In Date Here" readOnly/>
   </div>
   {/* <div class="mb-3" style={{paddingLeft: "250px", paddingRight: "200px"}}>
     <label for="Check-Out" class="form-label"><b>Check-Out Date and Time</b></label>
@@ -118,27 +123,13 @@ const Contact = (props) => {
     <div 
         class="form-image-last" 
     >
-            <img 
+            {picture?<img 
                 //src={props.image}
-                src={location.state.data.image}
-                alt="./bulgaria.png" />
+                src={picture}
+                alt="./bulgaria.png" />:
+            <WebcamCapture picture={picture} setPicture={setPicture}/>}
     </div>
-    {/* <input type="file"  class="form-control" id="imgInp" name="file" accept="image/*" aria-label="File browser example"
-            style={{padding: "30px",
-            content: 'Select some files',
-            display: "inline-block",
-            background: "linear-gradient(top, #f9f9f9, #e3e3e3)",
-            border: "1px solid #999",
-            borderRadius: "3px",
-            padding: "5px 8px",
-            outline: "none",
-            whiteSpace: "nowrap",
-            cursor: "pointer",
-            textShadow: "1px 1px #fff",
-            fontWeight: "700",
-            fontSize: "10pt"}}  
-            /> */}
-                   {/* <img id="blah" src="../static/img/3.jpg" alt="your image" style="width: 200px; height: 200px; padding: 15px;" /> */}
+   
     
   </div>
   <Link to='/home'>
@@ -160,4 +151,4 @@ const Contact = (props) => {
     )
 }
 
-export default Contact
+export default Entry

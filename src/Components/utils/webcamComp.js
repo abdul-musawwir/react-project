@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
-import Contact from "../Contact"
-import axios from "axios";
-import {SERVER_IP} from "../constants"
 import { useHistory } from "react-router-dom";
 
 const videoConstraints = {
@@ -12,71 +9,32 @@ const videoConstraints = {
   };
 
 
-  const WebcamCapture = () => {
+  const WebcamCapture = ({picture,setPicture}) => {
 
     const history = useHistory()
     const webcamRef = React.useRef(null);
 
-    const [image, setImage] = useState()
-    const [data, setData] = useState(null)
-  
-    const captureUrdu = React.useCallback(
-      () => {
-        const imageSrc = webcamRef.current.getScreenshot();
-        
-        axios.post("http://"+SERVER_IP+":5000/image_urdu", {
-            'image' : imageSrc
-        }).then(res => {
-            console.log("successfully inserted");
-            // console.log(res.data)
-            setData(res.data)
-        }).catch(err => {
-            console.log(err);
-            console.log("error bois" + err);
-        });
-        setImage(imageSrc)
-      },
-      [webcamRef]
-    );
 
     const captureEnglish = React.useCallback(
       () => {
         const imageSrc = webcamRef.current.getScreenshot();
         
-        axios.post("http://"+SERVER_IP+":5000/image_english", {
-            'image' : imageSrc
-        }).then(res => {
-          console.log("successfully inserted");
-          // console.log(res.data)
-          setData(res.data)
-        }).catch(err => {
-            console.log(err);
-            console.log("error bois" + err);
-        });
-        setImage(imageSrc)
+        setPicture(imageSrc)
       },
       [webcamRef]
     );
-
-    useEffect(()=>{
-        console.log(data)
-        if(image && data){
-          history.push('/contact',{image:image,data:data})
-        }
-    },[data,image])
   
     return (<>
+    <button style={{padding: "0 0 0 0"}} onClick={captureEnglish}>
         <Webcam
           audio={false}
-          height={500}
+          height={160}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          width={700}
+          width={260}
           videoConstraints={videoConstraints}
         />
-        <button onClick={captureEnglish}>Capture english photo</button>
-        <button onClick={captureUrdu}>Capture urdu photo</button>
-        <a href="/contact"><button >Skip</button></a>
+        </button>
       </>
     );
   };
