@@ -4,7 +4,7 @@ import { SERVER_IP } from './constants'
 import ShowResult from './ShowResult'
 
 
-const About = () => {
+const Search = () => {
 
     const [date,setDate] = useState(null)
     const [cnic,setCnic] = useState(null)
@@ -65,4 +65,4 @@ const About = () => {
     )
 }
 
-export default About
+export default Search

@@ -30,7 +30,7 @@ const Entry = (props) => {
       "Person_Count":perCount,
       "organization_name":NoOrg,
       "contact" : contactNo,
-      "Check_In_Date" : moment().format().slice(0,-6),
+      "Check_In_Date" : moment().format().slice(0,-15),
       "Check_Out_Date" : "",
       "Contact_Person" : contactPer,
       "Visit_Purpose" : purpose,
@@ -38,6 +38,7 @@ const Entry = (props) => {
       
     }).then(res => {
       console.log("successful")
+      alert("Successfully inserted");
   }).catch(err => {
       console.log(err);
       alert("error bois" + err);
