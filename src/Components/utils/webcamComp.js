@@ -18,7 +18,7 @@ const videoConstraints = {
     const captureEnglish = React.useCallback(
       () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        
+        console.log(imageSrc)
         setPicture(imageSrc)
       },
       [webcamRef]

@@ -2,7 +2,46 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { SERVER_IP } from './constants'
 import ShowResult from './ShowResult'
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
 
+
+const useStyles = makeStyles({
+    table: {
+      minWidth: 300,
+      
+    },
+    container:{
+        maxWidth: 350
+    },
+    row: {
+        // maxHeight: "12vh"
+        padding: 0
+    }
+  });
+  
+  function createData(checkbox, key, value) {
+    return { checkbox, key, value};
+  }
+  
+  const rows = [
+    createData('', "name","" ),
+    createData('', "cnic",""),
+    createData('', "Person_Count",""),
+    createData('', "organization_name",""),
+    createData('', "contact",""),
+    createData('', "Check_In_Date",""),
+    createData('', "Check_Out_Date",""),
+    createData('', "Contact_person",""),
+    createData('', "Visit_Purpose",""),
+  ];
 
 const Search = () => {
 
@@ -10,6 +49,8 @@ const Search = () => {
     const [cnic,setCnic] = useState(null)
 
     const [result,setResult] = useState(null)
+
+    const classes = useStyles();
 
     const handleDateClick=()=>{
         console.log(date)
@@ -46,9 +87,41 @@ const Search = () => {
     // },[result])
 
     return(
-        result?<ShowResult results={result} />:
+        // result?<ShowResult results={result} />:
         <>
-            <div style={{backgroundColor: "wheat"}}>
+        <div className="maincontainer">
+            <h1>Search</h1>
+            <TableContainer component={Paper} className={classes.container}>
+                <Table className={classes.table} aria-label="caption table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell className={classes.row}>&nbsp;</TableCell>
+                        <TableCell className={classes.row} align="center">Key</TableCell>
+                        <TableCell className={classes.row} align="center">value</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {rows.map((row) => (
+                        <TableRow key={row.name}>
+                        {/* <TableCell component="th" scope="row">
+                            {row.name}
+                        </TableCell> */}
+                        <TableCell className={classes.row} align="right">
+                            <Checkbox
+                            defaultChecked
+                            color="default"
+                            inputProps={{ 'aria-label': 'checkbox with default color' }}
+                        />
+                        </TableCell>
+                        <TableCell className={classes.row} align="center">{row.key}</TableCell>
+                        <TableCell className={classes.row} align="center"></TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+                </TableContainer>
+        </div>
+            {/* <div style={{backgroundColor: "wheat"}}>
     <h1 className = "text-center" style={{color:"black", paddingTop: "30px"}}><b> Query Search Screen</b></h1>
     <div className="mb-3" style={{paddingLeft: "400px", paddingRight: "400px", marginTop: "100px"}}>
         <label for="Check-Out" className="form-label"><b>Query on Date</b></label>
@@ -60,7 +133,7 @@ const Search = () => {
         <input type="number" onChange={(e)=>{setCnic(e.target.value);console.log(cnic)}} className="form-control" id="Contact_Number" name="Contact_Number" placeholder="Enter Your Contact Number Here" />
     </div>
     <button onClick={handleCnicClick} style={{flex: "content", paddingLeft: "40px", paddingRight: "40px" ,marginLeft: "600px", marginTop: "20px", marginBottom: "95px"}} type="submit" className="btn btn-primary">Query</button>
-    </div>
+    </div> */}
         </>
     )
 }
