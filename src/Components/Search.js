@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { SERVER_IP } from './constants'
-import ShowResult from './ShowResult'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,6 +10,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
+import TablePagination from '@material-ui/core/TablePagination';
+import Popup from './utils/Popup';
+import StringMask from 'string-mask'
+import moment from 'moment'
+import "./Search.css"
 
 
 const useStyles = makeStyles({
@@ -19,12 +24,24 @@ const useStyles = makeStyles({
       
     },
     container:{
-        maxWidth: 350
+        maxWidth: 350,
+        width: 350,
     },
     row: {
         // maxHeight: "12vh"
-        padding: 0
-    }
+        padding: 0,
+        height: "1rem"
+    },
+    rowHeading: {
+        // maxHeight: "12vh"
+        padding: 12
+    },
+    root: {
+        width: '100%',
+      },
+      container1: {
+        maxHeight: 440,
+      },
   });
   
   function createData(checkbox, key, value) {
@@ -39,7 +56,7 @@ const useStyles = makeStyles({
     createData('', "contact",""),
     createData('', "Check_In_Date",""),
     createData('', "Check_Out_Date",""),
-    createData('', "Contact_person",""),
+    createData('', "Contact_Person",""),
     createData('', "Visit_Purpose",""),
   ];
 
@@ -50,90 +67,292 @@ const Search = () => {
 
     const [result,setResult] = useState(null)
 
+    const [dataState, setDataState] = useState({
+        "name" : {"checked":false,"value":""},
+        "cnic" : {"checked":false,"value":""},
+        "Person_Count" : {"checked":false,"value":""},
+        "organization_name" : {"checked":false,"value":""},
+        "contact" : {"checked":false,"value":""},
+        "Check_In_Date" : {"checked":false,"value":""},
+        "Check_Out_Date" : {"checked":false,"value":""},
+        "Contact_Person" : {"checked":false,"value":""},
+        "Visit_Purpose" : {"checked":false,"value":""},
+    })
+
+    const [initials,setInitials] = useState(null)
     const classes = useStyles();
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rows1, setRows1] = useState(null);
+    const [openPopup, setOpenPopup] = useState(false)
 
-    const handleDateClick=()=>{
-        console.log(date)
-        axios.get("http://"+SERVER_IP+":5000/data_handling", {
-            params: {
-                date: date
-            }
-        }).then(res => {
-            console.log(res.data.result)
-            setResult(res.data.result)
-        }).catch(err => {
-            console.log(err);
-            alert("error bois" + err);
-        });
-    }
 
-    const handleCnicClick=()=>{
-        // console.log(cnic)
-        axios.get("http://"+SERVER_IP+":5000/data_handling", {
-            params: {
-                cnic: cnic
-            }
-        }).then(res => {
-            // console.log(res.data.result)
-            setResult(res.data.result)
-        }).catch(err => {
-            console.log(err);
-            alert("error bois" + err);
-        });
-    }
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+      };
+    
+      const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+      };
+
+      const handleClickOpen = () => {
+        openPopup(true);
+      };
+      const handleClose = () => {
+        setOpenPopup(false);
+      };
+
+
+    // useEffect(()=>{
+    //     console.log(initials)
+    //     console.log(rows)
+    // },[initials])
 
     // useEffect(()=>{
     //     console.log(result)
     // },[result])
 
+    const handleCheckBox = (checked,key) => {
+        // console.log(checked);
+        // console.log(key);
+        setDataState({
+            ...dataState,
+            [key] : {...dataState[key],"checked":checked}
+        })
+
+        // console.log(dataState)
+    }
+
+    // useEffect(()=>{
+    //     console.log(dataState)
+    // },[dataState])
+
+    const handleTextField = (value,key) => {
+        // console.log(value);
+        // console.log(key)
+        setDataState({
+            ...dataState,
+            [key] : {...dataState[key],"value":value}
+        })
+    }
+
+    const submitFilter = () => {
+        // console.log(dataState)
+        var formatter = new StringMask("00000-0000000-0");
+        // value = formatter.apply(value)
+        let data = {}
+        for (const [key,value] of Object.entries(dataState)){
+            // console.log(key,value)
+            if (value.checked == true)
+            {
+                if(key=="cnic")
+                {
+                    data = {
+                        ...data,
+                        [key]: formatter.apply(value.value)
+                    }
+                }
+                else
+                {
+                    data = {
+                        ...data,
+                        [key]:value.value
+                    }
+                }
+                
+            }
+        }
+        console.log(data)
+
+        axios.get("http://"+SERVER_IP+":5000/search_screen", {
+            params: {
+                ...data
+            }
+        }).then(res => {
+            console.log(res.data.result)
+            setRows1(res.data.result)
+            // setResult(res.data.result)
+        }).catch(err => {
+            console.log(err);
+            alert("error bois" + err);
+        });
+    }
+
+
+    const columns = [
+        { id: 'name', label: 'Name', minWidth: 170 },
+        { id: 'cnic', label: 'CNIC', minWidth: 100 },
+        { id: 'Person_Count', label: 'Person\u00a0Count', minWidth: 100 },
+        { id: 'organization_name', label: 'Organization\u00a0Name', minWidth: 100 },
+        { id: 'contact', label: 'Contact', minWidth: 100 },
+        { id: 'Check_In_Date', label: 'Check\u00a0In\u00a0Date\u00a0and\u00a0Time', minWidth: 100 },
+        { id: 'Check_Out_Date', label: 'Check\u00a0Out\u00a0Date\u00a0and\u00a0Time', minWidth: 100 },
+        { id: 'Contact_Person', label: 'Contact Person', minWidth: 100 },
+        { id: 'Visit_Purpose', label: 'Visit Purpose', minWidth: 100 },
+        { id: 'picture', label: 'Image', minWidth: 100 },
+      ];
+
     return(
         // result?<ShowResult results={result} />:
         <>
-        <div className="maincontainer">
+        <div className="maincontainer2">
             <h1>Search</h1>
+
+        <div className="contain">
+
+            <div className="filter">
             <TableContainer component={Paper} className={classes.container}>
                 <Table className={classes.table} aria-label="caption table">
+                <caption><button class="btnCap" onClick={submitFilter}>Submit</button></caption>
                     <TableHead>
                     <TableRow>
-                        <TableCell className={classes.row}>&nbsp;</TableCell>
-                        <TableCell className={classes.row} align="center">Key</TableCell>
-                        <TableCell className={classes.row} align="center">value</TableCell>
+                        <TableCell className={classes.rowHeading}>&nbsp;</TableCell>
+                        <TableCell className={classes.rowHeading} align="center"><h5>Keys</h5></TableCell>
+                        {/* <TableCell className={classes.row} align="center">value</TableCell> */}
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
-                        {/* <TableCell component="th" scope="row">
-                            {row.name}
-                        </TableCell> */}
-                        <TableCell className={classes.row} align="right">
-                            <Checkbox
-                            defaultChecked
-                            color="default"
-                            inputProps={{ 'aria-label': 'checkbox with default color' }}
-                        />
-                        </TableCell>
-                        <TableCell className={classes.row} align="center">{row.key}</TableCell>
-                        <TableCell className={classes.row} align="center"></TableCell>
-                        </TableRow>
-                    ))}
+                    {rows.map((row) => {
+                        if(row.key == "cnic") {
+                            return(
+                            <TableRow key={row.name}>
+                            <TableCell className={classes.row} align="right">
+                                <Checkbox
+                                defaultChecked= {false}
+                                color="default"
+                                inputProps={{ 'aria-label': 'checkbox with default color' }}
+                                onChange={(e)=>{handleCheckBox(e.target.checked,row.key)}}
+                            />
+                            </TableCell>
+                            <TableCell className={classes.row} align="center">
+                                <TextField id="standard-basic" value={dataState.cnic.value} label={row.key + "(xxxxxxxxxxxxx)"} onChange={(e)=>{handleTextField(e.target.value,row.key)} }/>
+                                {/* <InputMask mask="99999-9999999-9" className="standard-basic" id="cnic" maskChar={null}  onChange={(e)=>{handleTextField(e.target.value,row.key)}}  placeholder="cnic"/> */}
+                            </TableCell>
+                            </TableRow>
+                            )
+                        }
+                        else if(row.key == "Check_In_Date" || row.key == "Check_Out_Date") {
+                            return(
+                                <TableRow key={row.name}>
+                                <TableCell className={classes.row} align="right">
+                                    <Checkbox
+                                    defaultChecked= {false}
+                                    color="default"
+                                    inputProps={{ 'aria-label': 'checkbox with default color' }}
+                                    onChange={(e)=>{handleCheckBox(e.target.checked,row.key)}}
+                                />
+                                </TableCell>
+                                <TableCell className={classes.row} align="center">
+                                    {/* <TextField id="standard-basic" label={row.key} onChange={(e)=>{handleTextField(e.target.value,row.key)} }/> */}
+                                    <input type="date"  class="standard-basic" id="Check-In" name="Check-In" onChange={(e)=>{handleTextField(e.target.value,row.key)} } placeholder="Enter Your Check-In Date Here" />
+                                </TableCell>
+                                </TableRow>
+                            )
+                        }
+                        else{
+                            return(
+                                <TableRow key={row.name}>
+                                <TableCell className={classes.row} align="right">
+                                    <Checkbox
+                                    defaultChecked= {false}
+                                    color="default"
+                                    inputProps={{ 'aria-label': 'checkbox with default color' }}
+                                    onChange={(e)=>{handleCheckBox(e.target.checked,row.key)}}
+                                />
+                                </TableCell>
+                                <TableCell className={classes.row} align="center">
+                                    <TextField id="standard-basic" label={row.key} onChange={(e)=>{handleTextField(e.target.value,row.key)} }/>
+                                </TableCell>
+                                </TableRow>
+                            )
+                        }
+                    })}
                     </TableBody>
                 </Table>
                 </TableContainer>
+                </div>
+
         </div>
-            {/* <div style={{backgroundColor: "wheat"}}>
-    <h1 className = "text-center" style={{color:"black", paddingTop: "30px"}}><b> Query Search Screen</b></h1>
-    <div className="mb-3" style={{paddingLeft: "400px", paddingRight: "400px", marginTop: "100px"}}>
-        <label for="Check-Out" className="form-label"><b>Query on Date</b></label>
-        <input type="date"  onChange={(e)=>{setDate(e.target.value)}}   className="form-control" id="Check-Out" name="Check-Out" placeholder="Enter Your Check-Out Date Here"/>
-    </div>
-    <button onClick={handleDateClick} style={{flex: "content", paddingLeft: "40px", paddingRight: "40px" ,marginLeft: "600px", marginTop: "20px", marginBottom: "95px"}} type="submit" className="btn btn-primary">Query</button>
-    <div className="mb-3" style={{paddingLeft: "400px", paddingRight: "400px", marginBottom: "100px"}}>
-        <label for="Contact_Number" className="form-label"><b>Query on Cnic Number</b></label>
-        <input type="number" onChange={(e)=>{setCnic(e.target.value);console.log(cnic)}} className="form-control" id="Contact_Number" name="Contact_Number" placeholder="Enter Your Contact Number Here" />
-    </div>
-    <button onClick={handleCnicClick} style={{flex: "content", paddingLeft: "40px", paddingRight: "40px" ,marginLeft: "600px", marginTop: "20px", marginBottom: "95px"}} type="submit" className="btn btn-primary">Query</button>
-    </div> */}
+
+
+
+
+
+
+
+
+
+                    <br/><br/><br/>
+
+
+
+
+
+
+                <div className="table">
+                    {rows1?<Paper className={classes.root}>
+                    <TableContainer className={classes.container1}>
+                        <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                            {columns.map((column) => (
+                                <TableCell
+                                key={column.id}
+                                align={column.align}
+                                style={{ minWidth: column.minWidth }}
+                                >
+                                {column.label}
+                                </TableCell>
+                            ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows1.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            return (
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                {columns.map((column) => {
+                                    const value = row[column.id];
+                                    if (column.id == "picture"){
+                                        return(<TableCell key={column.id} align={column.align}>
+                                            
+                                            <Popup image={value}></Popup>
+                                            {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                        </TableCell>)
+                                    }
+                                    else {
+                                        return (
+                                            <TableCell key={column.id} align={column.align}>
+                                                {column.format && typeof value === 'number' ? column.format(value) : value}
+                                            </TableCell>
+                                            );
+                                    }
+                                    
+                                })}
+                                </TableRow>
+                            );
+                            })}
+                        </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>:null}
+                </div>
+
+
+
+
+
+        </div>
+        
         </>
     )
 }

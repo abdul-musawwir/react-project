@@ -96,7 +96,7 @@ const Exit = () => {
         axios.post("http://"+SERVER_IP+":5000/checkout_screen", {
             body: {
                 Check_In_Date: row.Check_In_Date,
-                Check_Out_Date: moment().format().slice(0,-15),
+                Check_Out_Date: moment().format().slice(0,-6),
                 cnic: row.cnic,
             }
         }).then(res => {
@@ -132,7 +132,7 @@ const Exit = () => {
     },[initials])
 
     return(
-        <div class="maincontainer">
+        <div class="maincontainer1">
             <h1>List of Remaining Visitors</h1>
             <div class="table" >
             {rows?<Paper className={classes.root}>

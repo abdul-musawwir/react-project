@@ -30,7 +30,7 @@ const Entry = (props) => {
       "Person_Count":perCount,
       "organization_name":NoOrg,
       "contact" : contactNo,
-      "Check_In_Date" : moment().format().slice(0,-15),
+      "Check_In_Date" : moment().format().slice(0,-6),
       "Check_Out_Date" : "",
       "Contact_Person" : contactPer,
       "Visit_Purpose" : purpose,
@@ -63,7 +63,7 @@ const Entry = (props) => {
 
 
     return(
-        <div className="maincontainer" >
+        <div className="maincontainer3" >
 
 <h1 class = "text-center" style={{color: "white", paddingTop: "30px"}}><b> Contact Form</b></h1>
 
