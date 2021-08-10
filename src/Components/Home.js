@@ -7,9 +7,10 @@ import './Home.css'
 
 const Home = () => {
 
-    const [seconds, setSeconds] = useState(30);
+    const [seconds, setSeconds] = useState(5);
     const [checkout, setCheckout] = useState(0);
     const [remaining, setRemainig] = useState(0);
+    const [defaulters,setDefaulters] = useState(0);
     const [total, setTotal] = useState(0)
 
     useEffect(()=>{
@@ -22,6 +23,7 @@ const Home = () => {
                 setTotal(res.data.total)
                 setRemainig(res.data.remaining)
                 setCheckout(res.data.checkout)
+                setDefaulters(res.data.defaulter)
                 // setResult(res.data.result)
             }).catch(err => {
                 console.log(err);
@@ -43,6 +45,7 @@ const Home = () => {
                 setTotal(res.data.total)
                 setRemainig(res.data.remaining)
                 setCheckout(res.data.checkout)
+                setDefaulters(res.data.defaulter)
                 // setResult(res.data.result)
             }).catch(err => {
                 console.log(err);
@@ -60,11 +63,13 @@ const Home = () => {
         <div class="show-data-container">
             <div class="show-data-wrapper">
                 <div class="billie">
-                    <p>Total Visitors:&nbsp;</p>
+                    <p>Total Visitors Today:&nbsp;</p>
                     <p></p>
                     <p>Checked out: &nbsp;</p>
                     <p></p>
                     <p style={{paddingRight:"40px"}}>Remaining:</p>
+                    <p></p>
+                    <p style={{paddingRight:"40px"}}>Defaulters:</p>
                 </div>
                 <div class="jean">
                     <p>{total}</p>
@@ -72,6 +77,8 @@ const Home = () => {
                     <p>{checkout}</p>
                     <p></p>
                     <p>{remaining}</p>
+                    <p></p>
+                    <p>{defaulters}</p>
                 </div>
             </div>
         </div>

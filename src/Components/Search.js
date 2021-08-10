@@ -16,6 +16,10 @@ import Popup from './utils/Popup';
 import StringMask from 'string-mask'
 import moment from 'moment'
 import "./Search.css"
+import { Button } from '@material-ui/core';
+import { PDFViewer } from '@react-pdf/renderer';
+import DocDownload from './utils/DocDownload';
+import ReactPDF from '@react-pdf/renderer';
 
 
 const useStyles = makeStyles({
@@ -193,6 +197,15 @@ const Search = () => {
         { id: 'picture', label: 'Image', minWidth: 100 },
       ];
 
+
+    const handleDownload = () => {
+        // the user can cause more than one child window so I give storage a unique id.
+        var parms = JSON.stringify(rows1);
+        var storageId = "parms" + String(Date.now());
+        sessionStorage.setItem(storageId, parms);
+        window.open('/generatepdf' + "?sid=" + storageId);
+    }
+
     return(
         // result?<ShowResult results={result} />:
         <>
@@ -291,7 +304,7 @@ const Search = () => {
 
 
                 <div className="table">
-                    {rows1?<Paper className={classes.root}>
+                    {rows1?<><Paper className={classes.root}>
                     <TableContainer className={classes.container1}>
                         <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -344,11 +357,17 @@ const Search = () => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                </Paper>:null}
+                </Paper>
+                
+                <div>
+                    <button onClick={()=>{handleDownload()}} >Generate Pdf</button>
+                </div>
+                </>
+                :null}
                 </div>
 
 
-
+                
 
 
         </div>
@@ -356,5 +375,7 @@ const Search = () => {
         </>
     )
 }
+
+// ReactPDF.render(<DocDownload />, `./example.pdf`);
 
 export default Search

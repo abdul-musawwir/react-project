@@ -6,10 +6,11 @@
     min-height: 100vh;
 }
 
-.maincontainer h1{
+.maincontainer1 h1{
     text-align: center;
     padding-top: 5vh;
     color: white;
+    padding-bottom: 30px;
 }
 
 .checkout{

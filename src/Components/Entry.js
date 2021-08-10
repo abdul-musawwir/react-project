@@ -21,41 +21,54 @@ const Entry = (props) => {
   const [contactPer,setcontactPer] = useState(null)
   const [purpose,setPurpose] = useState(null)
   const [picture,setPicture] = useState(null)
+  const [isVlaid,setIsValid] = useState(false)
+  const [cnicWrong,setCnicWrong] = useState(null)
   
+  const checkValid = () => {
+    if (cnic.length == 15){
+      setIsValid(true)
+      
+    }
+    setCnicWrong("Incomplete CNIC")
+  }
 
   const clickHandler = () => {
-    axios.post("http://"+SERVER_IP+":5000/data_handling", {
-      "name":PropName,
-      "cnic":cnic,
-      "Person_Count":perCount,
-      "organization_name":NoOrg,
-      "contact" : contactNo,
-      "Check_In_Date" : moment().format().slice(0,-6),
-      "Check_Out_Date" : "",
-      "Contact_Person" : contactPer,
-      "Visit_Purpose" : purpose,
-      "picture" : picture,
-      
-    }).then(res => {
-      console.log("successful")
-      alert("Successfully inserted");
-  }).catch(err => {
-      console.log(err);
-      alert("error bois" + err);
-  })
-    let data = {
-      "name":PropName,
-      "cnic":cnic,
-      "person_count":perCount,
-      "name_of_organization":NoOrg,
-      "contact_number" : contactNo,
-      "check_in_datetime" : moment().format().slice(0,-6),
-      "check_out_datetime" : "",
-      "contact_person" : contactPer,
-      "contact_purpose" : purpose,
-      "picture" : picture,
+    checkValid();
+    if(isVlaid == true){
+      axios.post("http://"+SERVER_IP+":5000/data_handling", {
+        "name":PropName,
+        "cnic":cnic,
+        "Person_Count":perCount,
+        "organization_name":NoOrg,
+        "contact" : contactNo,
+        "Check_In_Date" : moment().format().slice(0,-6),
+        "Check_Out_Date" : "",
+        "Contact_Person" : contactPer,
+        "Visit_Purpose" : purpose,
+        "picture" : picture,
+        
+      }).then(res => {
+        console.log("successful")
+        alert("Successfully inserted");
+        history.push('/')
+    }).catch(err => {
+        console.log(err);
+        alert("error bois" + err);
+    })
+      let data = {
+        "name":PropName,
+        "cnic":cnic,
+        "person_count":perCount,
+        "name_of_organization":NoOrg,
+        "contact_number" : contactNo,
+        "check_in_datetime" : moment().format().slice(0,-6),
+        "check_out_datetime" : "",
+        "contact_person" : contactPer,
+        "contact_purpose" : purpose,
+        "picture" : picture,
+      }
+      console.log(data)
     }
-    console.log(data)
   }
 
  
@@ -83,13 +96,13 @@ const Entry = (props) => {
     <div id="emailHelp" class="form-text"></div>
   </div>
   <div class="mb-3" >
-    <label for="cnic" class="form-label"><b>Cnic</b></label>
+    <label for="cnic" class="form-label"><b>Cnic <span style={{color:"red", paddingLeft:"15px"}}>{cnicWrong}</span></b></label>
     {/* <input type="text" value={cnic} onChange={handleCnic(e)} class="form-control" id="cnic" name="cnic" placeholder="Enter Your cnic Here"/> */}
     <InputMask mask="99999-9999999-9" className="form-control" maskChar={null}  onChange={(e)=>{setCnic(e.target.value)}}  placeholder="Enter Your cnic Here"/>
   </div>
   <div class="mb-3" >
     <label for="Person_Count" class="form-label"><b>Person Count</b></label>
-    <input type="text" onChange={e=>setPerCount(e.target.value)} class="form-control" id="Address" name="Address" placeholder="Enter Person Count Here"/>
+    <input type="number" onChange={e=>setPerCount(e.target.value)} class="form-control" id="Address" name="Address" placeholder="Enter Person Count Here"/>
   </div>
   <div class="mb-3" >
     <label for="Organization" class="form-label"><b>Name of Organization</b></label>
@@ -133,7 +146,7 @@ const Entry = (props) => {
    
     
   </div>
-  <Link to='/home'>
+  
   <button 
   style= {{
     flex: "content",
@@ -145,7 +158,7 @@ const Entry = (props) => {
      fontSize:"25px",
      borderRadius:"25px",
      backgroundColor: "darkblue",
-     }} onClick={clickHandler} type="submit" class="btn btn-primary">Submit</button></Link>
+     }} onClick={clickHandler} type="submit" class="btn btn-primary">Submit</button>
 {/* </form> */}
 </div>
 </div>
