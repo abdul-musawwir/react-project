@@ -7,6 +7,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom'
 import CancelIcon from '@material-ui/icons/Cancel';
 import WebcamCapture from './utils/webcamComp'
 import InputMask from 'react-input-mask'
+import ReplayIcon from '@material-ui/icons/Replay';
 
 const Entry = (props) => {
   // const location = useLocation()
@@ -134,6 +135,7 @@ const Entry = (props) => {
   </div>
   <div class="mb-3" >
     <label for="Picture" class="form-label"><b>Picture</b></label>
+    <ReplayIcon style={{position:"absolute", marginLeft:"11rem",color:"white"}} onClick={()=>{setPicture(null)}} />
     <div 
         class="form-image-last" 
     >
@@ -142,8 +144,9 @@ const Entry = (props) => {
                 src={picture}
                 alt="./bulgaria.png" />:
             <WebcamCapture picture={picture} setPicture={setPicture}/>}
+            
     </div>
-   
+    
     
   </div>
   
