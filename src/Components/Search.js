@@ -41,7 +41,8 @@ const useStyles = makeStyles({
         padding: 12
     },
     root: {
-        width: '100%',
+        width: '95%',
+        marginLeft: "2.5%"
       },
       container1: {
         maxHeight: 440,
@@ -360,7 +361,7 @@ const Search = () => {
                 </Paper>
                 
                 <div>
-                    <button onClick={()=>{handleDownload()}} >Generate Pdf</button>
+                    <button onClick={()=>{handleDownload()}} class="generate">Generate Pdf</button>
                 </div>
                 </>
                 :null}
