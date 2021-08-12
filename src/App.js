@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { BrowserRouter,Route, Switch } from 'react-router-dom';
 import Login from './Components/Login'
 import Home from './Components/Home'
@@ -6,7 +6,6 @@ import Entry from './Components/Entry'
 import Exit from './Components/Exit'
 import './App.css';
 import Navbar from './Components/utils/Navbar';
-import ShowResult from './Components/ShowResult';
 import Search from './Components/Search';
 import useToken from './Components/hooks/useToken';
 import PdfGenerate from './Components/PdfGenerate';
@@ -29,7 +28,6 @@ function App() {
           <Route path='/search'><Navbar/><Search/></Route>
           <Route path='/entry'><Navbar/><Entry/></Route>
           <Route path='/exit'><Navbar/><Exit/></Route>
-          <Route path='/showresults'><Navbar/><ShowResult/></Route>
           <Route path='/generatepdf'><PdfGenerate/></Route>
         </Switch>
       </BrowserRouter>

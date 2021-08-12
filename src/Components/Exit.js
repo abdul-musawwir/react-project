@@ -21,34 +21,9 @@ const columns = [
     { id: 'Check_In_Date', label: 'Check\u00a0In\u00a0Date\u00a0and\u00a0Time', minWidth: 100 },
     { id: 'picture', label: 'Image', minWidth: 100 },
     { id: 'checkout', label: 'Checkout', minWidth: 100 },
-    // {
-    //   id: 'population',
-    //   label: 'Population',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //   id: 'size',
-    //   label: 'Size\u00a0(km\u00b2)',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //   id: 'density',
-    //   label: 'Density',
-    //   minWidth: 170,
-    //   align: 'right',
-    //   format: (value) => value.toFixed(2),
-    // },
   ];
 
-  
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
+
 
 const useStyles = makeStyles({
     root: {
@@ -61,13 +36,10 @@ const useStyles = makeStyles({
   });
 
 const Exit = () => {
-
-    const [initials,setInitials] = useState(null)
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState(null);
-    const [openPopup, setOpenPopup] = useState(false)
 
 
     const handleChangePage = (event, newPage) => {
@@ -79,21 +51,8 @@ const Exit = () => {
         setPage(0);
       };
 
-      const handleClickOpen = () => {
-        openPopup(true);
-      };
-      const handleClose = () => {
-        setOpenPopup(false);
-      };
 
       const handleCheckout = (row) => {
-        // console.log(row)
-        const data = {
-            Check_In_Date: row.Check_In_Date,
-            Check_Out_Date: moment().format().slice(0,-15),
-            cnic: row.cnic,
-        }
-        console.log(data)
         axios.post("http://"+SERVER_IP+":5000/checkout_screen", {
             body: {
                 Check_In_Date: row.Check_In_Date,
@@ -101,12 +60,10 @@ const Exit = () => {
                 cnic: row.cnic,
             }
         }).then(res => {
-            console.log(res.data.Success)
             alert("Successfully Checked Out")
             window.location.reload(false)
             
         }).catch(err => {
-            console.log(err);
             alert("Failed to checkout! Please try again.");
         });
       }
@@ -117,21 +74,12 @@ const Exit = () => {
                 date: moment().format().slice(0,-15),
             }
         }).then(res => {
-            // console.log(res.data.result)
-            setInitials(res.data.result)
             setRows(res.data.result);
-            // console.log(initials)
             
         }).catch(err => {
-            console.log(err);
             alert("Data fetch Failed! ");
         });
     },[])
-
-    useEffect(()=>{
-        console.log(initials)
-        console.log(rows)
-    },[initials])
 
     return(
         <div class="maincontainer1">
@@ -159,14 +107,13 @@ const Exit = () => {
                             <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                             {columns.map((column) => {
                                 const value = row[column.id];
-                                if (column.id == "picture"){
+                                if (column.id === "picture"){
                                     return(<TableCell key={column.id} align={column.align}>
                                         
                                         <Popup image={value}></Popup>
-                                        {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                     </TableCell>)
                                 }
-                                else if (column.id == "checkout"){
+                                else if (column.id === "checkout"){
                                     return(<TableCell key={column.id} align={column.align}>
                                         <a class="checkout" onClick={()=>handleCheckout(row)} > Checkout</a>
                                        
@@ -200,22 +147,7 @@ const Exit = () => {
             
             </div>
             
-            {/* {
-                initials?initials.map((init)=>(
-                    <div>
-                        <p>{init.name}</p>
-                        <p>{init.cnic}</p>
-                        <p>{init.Person_Count}</p>
-                        <p>{init.organization_name}</p>
-                        <p>{init.contact}</p>
-                        <p>{init.Check_In_Date}</p>
-                        <p>{init.Check_Out_Date}</p>
-                        <p>{init.Contact_Person}</p>
-                        <p>{init.Visit_Purpose}</p>
-                        <br/><br/><br/>
-                    </div>
-                )):null
-            } */}
+            
         </div>
     )
 }

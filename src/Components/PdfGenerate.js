@@ -14,9 +14,6 @@ const PdfGenerate = (props) => {
         sessionStorage.removeItem(sid);
         setData(args);
     },[])
-    useEffect(()=>{
-        console.log(data)
-    },[data])
     return(
         <>
        {data? <div className="download" style={{width:"100%",height:"100vh"}}>

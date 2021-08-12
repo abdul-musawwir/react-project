@@ -19,14 +19,12 @@ const Home = () => {
                     date: moment().format().slice(0,-15),
                 }
             }).then(res => {
-                console.log(res.data)
                 setTotal(res.data.total)
                 setRemainig(res.data.remaining)
                 setCheckout(res.data.checkout)
                 setDefaulters(res.data.defaulter)
                 // setResult(res.data.result)
             }).catch(err => {
-                console.log(err);
                 alert("Failed: " + err+ "\nPlease refresh your screen");
             });
     },[])
@@ -34,25 +32,21 @@ const Home = () => {
     useEffect(() => {
         if (seconds > 0) {
           setTimeout(() => setSeconds(seconds - 1), 1000);
-          console.log(seconds);
         } else {
             axios.get("http://"+SERVER_IP+":5000/home_screen_renderer",{
                 params: {
                     date: moment().format().slice(0,-15),
                 }
             }).then(res => {
-                console.log(res.data)
                 setTotal(res.data.total)
                 setRemainig(res.data.remaining)
                 setCheckout(res.data.checkout)
                 setDefaulters(res.data.defaulter)
                 // setResult(res.data.result)
             }).catch(err => {
-                console.log(err);
                 alert("Failed: " + err+ "\n please Refresh your screen");
             });
           setSeconds(30)
-          console.log(seconds);
         }
       });
 

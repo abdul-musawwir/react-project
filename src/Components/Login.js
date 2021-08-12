@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
-import { useHistory, useLocation } from 'react-router-dom'
 import './Login.css'
 import { SERVER_IP } from './constants'
 
 export default function Login ({setToken}){
     const [username,setUsername] = useState(null)
     const [password,setPassword] = useState(null)
-    const history = useHistory()
 
     async function loginUser(credentials) {
         return fetch('http://'+SERVER_IP+':5000/login', {
@@ -17,19 +15,9 @@ export default function Login ({setToken}){
           },
           body: JSON.stringify(credentials)
         })
-          .then(data => data.json()).catch(error=>{console.log(error);alert("Login Failed")});
+          .then(data => data.json()).catch(error=>{alert("Login Failed")});
        }
 
-
-
-    // function HandleLogin(){
-    //     console.log("here"+Username+Password)
-        
-    //     if(Username==="admin" && Password==="password"){
-    //         history.push("/home");
-    //         // this.props.history.push("/home")
-    //     }
-    // }
 
     const handleSubmit = async e => {
         e.preventDefault();

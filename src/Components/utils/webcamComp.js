@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Webcam from "react-webcam";
-import { useHistory } from "react-router-dom";
 
 const videoConstraints = {
     width: 1280,
@@ -11,14 +10,12 @@ const videoConstraints = {
 
   const WebcamCapture = ({picture,setPicture}) => {
 
-    const history = useHistory()
     const webcamRef = React.useRef(null);
 
 
     const captureEnglish = React.useCallback(
       () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        console.log(imageSrc)
         setPicture(imageSrc)
       },
       [webcamRef]

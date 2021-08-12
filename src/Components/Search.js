@@ -73,11 +73,6 @@ const Search = () => {
 
     const classes1 = useStyles1();
 
-    const [date,setDate] = useState(null)
-    const [cnic,setCnic] = useState(null)
-
-    const [result,setResult] = useState(null)
-
     const [dataState, setDataState] = useState({
         "name" : {"checked":false,"value":""},
         "cnic" : {"checked":false,"value":""},
@@ -90,12 +85,10 @@ const Search = () => {
         "Visit_Purpose" : {"checked":false,"value":""},
     })
 
-    const [initials,setInitials] = useState(null)
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows1, setRows1] = useState(null);
-    const [openPopup, setOpenPopup] = useState(false)
     const [isLoading, setisLoading] = useState(false)
 
     const messagesEndRef = useRef(null)
@@ -116,41 +109,20 @@ const Search = () => {
         setPage(0);
       };
 
-      const handleClickOpen = () => {
-        openPopup(true);
-      };
-      const handleClose = () => {
-        setOpenPopup(false);
-      };
+     
 
 
-    // useEffect(()=>{
-    //     console.log(initials)
-    //     console.log(rows)
-    // },[initials])
-
-    // useEffect(()=>{
-    //     console.log(result)
-    // },[result])
 
     const handleCheckBox = (checked,key) => {
-        // console.log(checked);
-        // console.log(key);
         setDataState({
             ...dataState,
             [key] : {...dataState[key],"checked":checked}
         })
 
-        // console.log(dataState)
     }
 
-    // useEffect(()=>{
-    //     console.log(dataState)
-    // },[dataState])
 
     const handleTextField = (value,key) => {
-        // console.log(value);
-        // console.log(key)
         setDataState({
             ...dataState,
             [key] : {...dataState[key],"value":value}
@@ -160,15 +132,12 @@ const Search = () => {
     const submitFilter = () => {
         scrollToBottom()
         setisLoading(true)
-        // console.log(dataState)
         var formatter = new StringMask("00000-0000000-0");
-        // value = formatter.apply(value)
         let data = {}
         for (const [key,value] of Object.entries(dataState)){
-            // console.log(key,value)
-            if (value.checked == true)
+            if (value.checked === true)
             {
-                if(key=="cnic")
+                if(key==="cnic")
                 {
                     data = {
                         ...data,
@@ -185,19 +154,15 @@ const Search = () => {
                 
             }
         }
-        console.log(data)
 
         axios.get("http://"+SERVER_IP+":5000/search_screen", {
             params: {
                 ...data
             }
         }).then(res => {
-            console.log(res.data.result)
             setRows1(res.data.result)
-            console.log("response")
             // setResult(res.data.result)
         }).catch(err => {
-            console.log(err);
             setisLoading(false)
             alert("Query failed! Please try again.");
         });
@@ -250,7 +215,7 @@ const Search = () => {
                     </TableHead>
                     <TableBody>
                     {rows.map((row) => {
-                        if(row.key == "cnic") {
+                        if(row.key === "cnic") {
                             return(
                             <TableRow key={row.name}>
                             <TableCell className={classes.row} align="right">
@@ -268,7 +233,7 @@ const Search = () => {
                             </TableRow>
                             )
                         }
-                        else if(row.key == "Check_In_Date" || row.key == "Check_Out_Date") {
+                        else if(row.key === "Check_In_Date" || row.key === "Check_Out_Date") {
                             return(
                                 <TableRow key={row.name}>
                                 <TableCell className={classes.row} align="right">
@@ -327,7 +292,7 @@ const Search = () => {
 
 
                 <div className="table">
-                    {isLoading==false?rows1?<><Paper className={classes.root}>
+                    {isLoading===false?rows1?<><Paper className={classes.root}>
                     <TableContainer className={classes.container1}>
                         <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -349,7 +314,7 @@ const Search = () => {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                 {columns.map((column) => {
                                     const value = row[column.id];
-                                    if (column.id == "picture"){
+                                    if (column.id === "picture"){
                                         return(<TableCell key={column.id} align={column.align}>
                                             
                                             <Popup image={value}></Popup>
