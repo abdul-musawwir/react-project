@@ -27,7 +27,7 @@ const Home = () => {
                 // setResult(res.data.result)
             }).catch(err => {
                 console.log(err);
-                alert("error bois" + err);
+                alert("Failed: " + err+ "\nPlease refresh your screen");
             });
     },[])
 
@@ -49,7 +49,7 @@ const Home = () => {
                 // setResult(res.data.result)
             }).catch(err => {
                 console.log(err);
-                alert("error bois" + err);
+                alert("Failed: " + err+ "\n please Refresh your screen");
             });
           setSeconds(30)
           console.log(seconds);

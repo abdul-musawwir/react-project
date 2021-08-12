@@ -17,7 +17,7 @@ export default function Login ({setToken}){
           },
           body: JSON.stringify(credentials)
         })
-          .then(data => data.json())
+          .then(data => data.json()).catch(error=>{console.log(error);alert("Login Failed")});
        }
 
 
@@ -37,7 +37,12 @@ export default function Login ({setToken}){
           username,
           password
         });
-        setToken(token);
+        if (token){
+          setToken(token);
+        }
+        else{
+          alert("Login Failed")
+        }
       }
 
     return(

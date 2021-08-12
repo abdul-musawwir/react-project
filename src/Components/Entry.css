@@ -49,3 +49,11 @@
     width: 40rem;
 }
 
+.incomplete{
+    position: absolute;
+    color: red;
+    display: flex;
+    padding-left: 475px;
+    padding-top: 70px;
+}
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { SERVER_IP } from './constants'
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,12 +14,8 @@ import TextField from '@material-ui/core/TextField';
 import TablePagination from '@material-ui/core/TablePagination';
 import Popup from './utils/Popup';
 import StringMask from 'string-mask'
-import moment from 'moment'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import "./Search.css"
-import { Button } from '@material-ui/core';
-import { PDFViewer } from '@react-pdf/renderer';
-import DocDownload from './utils/DocDownload';
-import ReactPDF from '@react-pdf/renderer';
 
 
 const useStyles = makeStyles({
@@ -48,6 +44,14 @@ const useStyles = makeStyles({
         maxHeight: 440,
       },
   });
+
+
+  const useStyles1 = makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+  }));
   
   function createData(checkbox, key, value) {
     return { checkbox, key, value};
@@ -66,6 +70,8 @@ const useStyles = makeStyles({
   ];
 
 const Search = () => {
+
+    const classes1 = useStyles1();
 
     const [date,setDate] = useState(null)
     const [cnic,setCnic] = useState(null)
@@ -90,6 +96,15 @@ const Search = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows1, setRows1] = useState(null);
     const [openPopup, setOpenPopup] = useState(false)
+    const [isLoading, setisLoading] = useState(false)
+
+    const messagesEndRef = useRef(null)
+
+    
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+      }
 
 
     const handleChangePage = (event, newPage) => {
@@ -143,6 +158,8 @@ const Search = () => {
     }
 
     const submitFilter = () => {
+        scrollToBottom()
+        setisLoading(true)
         // console.log(dataState)
         var formatter = new StringMask("00000-0000000-0");
         // value = formatter.apply(value)
@@ -177,13 +194,18 @@ const Search = () => {
         }).then(res => {
             console.log(res.data.result)
             setRows1(res.data.result)
+            console.log("response")
             // setResult(res.data.result)
         }).catch(err => {
             console.log(err);
-            alert("error bois" + err);
+            setisLoading(false)
+            alert("Query failed! Please try again.");
         });
     }
-
+    useEffect(() => {
+        scrollToBottom()
+        setisLoading(false)
+      }, [rows1]);
 
     const columns = [
         { id: 'name', label: 'Name', minWidth: 170 },
@@ -305,7 +327,7 @@ const Search = () => {
 
 
                 <div className="table">
-                    {rows1?<><Paper className={classes.root}>
+                    {isLoading==false?rows1?<><Paper className={classes.root}>
                     <TableContainer className={classes.container1}>
                         <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -352,7 +374,7 @@ const Search = () => {
                     <TablePagination
                         rowsPerPageOptions={[10, 25, 100]}
                         component="div"
-                        count={rows.length}
+                        count={rows1.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -364,12 +386,12 @@ const Search = () => {
                     <button onClick={()=>{handleDownload()}} class="generate">Generate Pdf</button>
                 </div>
                 </>
-                :null}
+                :null:<div className={classes1.root}><CircularProgress color="secondary" style={{color:'white', width:"60px",height:"60px"}} /></div>}
                 </div>
 
 
                 
-
+                <div ref={messagesEndRef} />
 
         </div>
         

@@ -102,11 +102,12 @@ const Exit = () => {
             }
         }).then(res => {
             console.log(res.data.Success)
+            alert("Successfully Checked Out")
             window.location.reload(false)
             
         }).catch(err => {
             console.log(err);
-            alert("error bois" + err);
+            alert("Failed to checkout! Please try again.");
         });
       }
 
@@ -123,7 +124,7 @@ const Exit = () => {
             
         }).catch(err => {
             console.log(err);
-            alert("error bois" + err);
+            alert("Data fetch Failed! ");
         });
     },[])
 

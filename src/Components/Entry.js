@@ -22,20 +22,30 @@ const Entry = (props) => {
   const [contactPer,setcontactPer] = useState(null)
   const [purpose,setPurpose] = useState(null)
   const [picture,setPicture] = useState(null)
-  const [isVlaid,setIsValid] = useState(false)
+  const [isValid,setIsValid] = useState(null)
   const [cnicWrong,setCnicWrong] = useState(null)
   
   const checkValid = () => {
-    if (cnic.length == 15){
+    if (cnic != null &&
+        cnic.length == 15 &&
+        PropName != null &&
+        perCount != null &&
+        NoOrg != null &&
+        contactNo != null &&
+        contactPer != null &&
+        purpose != null &&
+        picture != null ){
       setIsValid(true)
-      
     }
-    setCnicWrong("Incomplete CNIC")
+    else{
+      setIsValid(false)
+      setCnicWrong("Incomplete CNIC")
+    }
   }
 
   const clickHandler = () => {
     checkValid();
-    if(isVlaid == true){
+    if(isValid == true){
       axios.post("http://"+SERVER_IP+":5000/data_handling", {
         "name":PropName,
         "cnic":cnic,
@@ -54,7 +64,7 @@ const Entry = (props) => {
         history.push('/')
     }).catch(err => {
         console.log(err);
-        alert("error bois" + err);
+        alert("Data Insertion failed! Please try again.");
     })
       let data = {
         "name":PropName,
@@ -136,6 +146,7 @@ const Entry = (props) => {
   <div class="mb-3" >
     <label for="Picture" class="form-label"><b>Picture</b></label>
     <ReplayIcon style={{position:"absolute", marginLeft:"11rem",color:"white"}} onClick={()=>{setPicture(null)}} />
+    {isValid == false?<p class="incomplete" >Incomplete data entered</p>:null}
     <div 
         class="form-image-last" 
     >
@@ -154,8 +165,8 @@ const Entry = (props) => {
   style= {{
     flex: "content",
      marginLeft: "600px",
-     position:"relative",
-     marginTop:"-130px", 
+     position:"absolute",
+     marginTop:"-70px", 
      width:"150px",
      height:"50px", 
      fontSize:"25px",
