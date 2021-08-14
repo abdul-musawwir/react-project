@@ -53,7 +53,6 @@ const DocDownload = ({data}) => (
           <Text>Check Out Date: {item.Check_Out_Date}</Text>
           <Text>Contact Person: {item.Contact_Person}</Text>
           <Text>Visit Purpose: {item.Visit_Purpose}</Text>
-          <Text>Picture: </Text>{item.picture?<Image style={styles.image} src={item.picture} alt="null" />:<Text>No Picture</Text>}
         </View>
       ))}
     </Page>
