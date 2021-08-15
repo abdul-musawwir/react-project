@@ -1,5 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import moment from 'moment';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -24,24 +25,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-      width: 200,
-      height: 130
+      position: 'absolute',
+      paddingTop: 25,
+      paddingLeft: 13,
+      width: 100,
+      height: 90
   },
   line: {
+      margin: 10,
       height: 5,
       backgroundColor: 'black'
+  },
+  generate: {
+    float: 'right',
+    paddingTop: 10,
+    paddingLeft: 30
   }
 });
 
 // Create Document Component
-const DocDownload = ({data}) => (
+const DocDownload = ({data,time}) => (
   <Document>
     <Page size="A4" style={styles.page} wrap>
         <View style={styles.head}>
             <Text style={styles.heading}>Crescent Steels and Allied</Text>
             <Text style={styles.heading}> Products Limited</Text>
+            <Image style={styles.image} src="./logo.png" alt="null" />
         </View>
         <Text style={styles.subheading} >Outsider Visitor Record</Text>
+        <Text style={styles.generate} >Generated on: {time}</Text>
         <Text style={styles.line} ></Text>
       {data.map((item)=>(
           <View style={styles.section} wrap={false}>

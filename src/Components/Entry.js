@@ -24,14 +24,36 @@ const Entry = (props) => {
   // const [picture,setPicture] = useState(null)
   const [isValid,setIsValid] = useState(null)
   const [cnicWrong,setCnicWrong] = useState(null)
+  const [perCountWrong, setPerCountWorng] = useState(null)
+  const [contactNoWrong, setContactNoWrong] = useState(null)
   
   const checkValid = () => {
+    if (perCount < 0 && perCount != null ){
+      setPerCountWorng("Negative person count can not be entered")
+    }
+    else {
+      setPerCountWorng(null)
+    }
+    if (cnic != null && cnic.length !== 15) {
+      setCnicWrong("Incomplete CNIC")
+    }
+    else {
+      setCnicWrong(null)
+    }
+    if (contactNo != null && contactNo.match(/^\+?[1-9]\d{1,14}$/) == null){
+      setContactNoWrong("Wrong Contact No")
+    }
+    else {
+      setContactNoWrong(null)
+    }
     if (cnic != null &&
-        cnic.length === 15 &&
+        cnicWrong == null &&
         PropName != null &&
         perCount != null &&
+        perCountWrong == null &&
         NoOrg != null &&
         contactNo != null &&
+        contactNoWrong != null &&
         contactPer != null &&
         purpose != null //&&
         // picture != null 
@@ -40,7 +62,6 @@ const Entry = (props) => {
     }
     else{
       setIsValid(false)
-      setCnicWrong("Incomplete CNIC")
     }
   }
 
@@ -102,7 +123,7 @@ const Entry = (props) => {
      <InputMask mask="99999-9999999-9" className="form-control" maskChar={null}  onChange={(e)=>{setCnic(e.target.value)}}  placeholder="Enter Your cnic Here"/>
   </div>
   <div class="mb-3" >
-    <label for="Person_Count" class="form-label"><b>Person Count</b></label>
+    <label for="Person_Count" class="form-label"><b>Person Count <span style={{color:"red", paddingLeft:"15px"}}>{perCountWrong}</span></b></label>
     <input type="number" onChange={e=>setPerCount(e.target.value)} class="form-control" id="Address" name="Address" placeholder="Enter Person Count Here"/>
   </div>
   <div class="mb-3" >
@@ -110,7 +131,7 @@ const Entry = (props) => {
     <input type="text" onChange={e=>setNoOrg(e.target.value)} class="form-control" id="Organization" name="Organization" placeholder="Enter Name of Organization Here"/>
   </div>
   <div class="mb-3" >
-    <label for="Contact_Number" class="form-label"><b>Contact Number</b></label>
+    <label for="Contact_Number" class="form-label"><b>Contact Number <span style={{color:"red", paddingLeft:"15px"}}>{contactNoWrong}</span></b></label>
     <input type="number" onChange={e=>setContactNo(e.target.value)} class="form-control" id="Contact_Number" name="Contact_Number" placeholder="Enter Your Contact Number Here"/>
   </div>
   <div class="mb-3" >
