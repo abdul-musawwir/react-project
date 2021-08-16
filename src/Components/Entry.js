@@ -40,7 +40,7 @@ const Entry = (props) => {
     else {
       setCnicWrong(null)
     }
-    if (contactNo != null && contactNo.match(/^\+?[1-9]\d{1,14}$/) == null){
+    if (contactNo != null && contactNo.match(/^\+?[0-9]\d{1,14}$/) == null){
       setContactNoWrong("Wrong Contact No")
     }
     else {
@@ -53,7 +53,7 @@ const Entry = (props) => {
         perCountWrong == null &&
         NoOrg != null &&
         contactNo != null &&
-        contactNoWrong != null &&
+        contactNoWrong == null &&
         contactPer != null &&
         purpose != null //&&
         // picture != null 
