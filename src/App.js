@@ -9,6 +9,7 @@ import Navbar from './Components/utils/Navbar';
 import Search from './Components/Search';
 import useToken from './Components/hooks/useToken';
 import PdfGenerate from './Components/PdfGenerate';
+import Regulars from './Components/Regulars';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path='/entry'><Navbar/><Entry/></Route>
           <Route path='/exit'><Navbar/><Exit/></Route>
           <Route path='/generatepdf'><PdfGenerate/></Route>
+          <Route path='/regulars'><Navbar/><Regulars/></Route>
         </Switch>
       </BrowserRouter>
     </div>

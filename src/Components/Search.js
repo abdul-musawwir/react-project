@@ -60,13 +60,14 @@ const useStyles = makeStyles({
   const rows = [
     createData('', "name","" ),
     createData('', "cnic",""),
-    createData('', "Person_Count",""),
+    // createData('', "Person_Count",""),
     createData('', "organization_name",""),
-    createData('', "contact",""),
-    createData('', "Check_In_Date",""),
-    createData('', "Check_Out_Date",""),
-    createData('', "Contact_Person",""),
-    createData('', "Visit_Purpose",""),
+    // createData('', "contact",""),
+    createData('', "From",""),
+    createData('', "To",""),
+    // createData('', "Contact_Person",""),
+    // createData('', "Visit_Purpose",""),
+    createData('', "Non_Checked_Out","")
   ];
 
 const Search = () => {
@@ -76,13 +77,14 @@ const Search = () => {
     const [dataState, setDataState] = useState({
         "name" : {"checked":false,"value":""},
         "cnic" : {"checked":false,"value":""},
-        "Person_Count" : {"checked":false,"value":""},
+        // "Person_Count" : {"checked":false,"value":""},
         "organization_name" : {"checked":false,"value":""},
-        "contact" : {"checked":false,"value":""},
-        "Check_In_Date" : {"checked":false,"value":""},
-        "Check_Out_Date" : {"checked":false,"value":""},
-        "Contact_Person" : {"checked":false,"value":""},
-        "Visit_Purpose" : {"checked":false,"value":""},
+        // "contact" : {"checked":false,"value":""},
+        "From" : {"checked":false,"value":""},
+        "To" : {"checked":false,"value":""},
+        // "Contact_Person" : {"checked":false,"value":""},
+        // "Visit_Purpose" : {"checked":false,"value":""},
+        "Non_Checked_Out" : {"checked":false,"value":""}
     })
 
     const classes = useStyles();
@@ -144,6 +146,13 @@ const Search = () => {
                         [key]: formatter.apply(value.value)
                     }
                 }
+                else if(key === "Non_Checked_Out")
+                {
+                    data = {
+                        ...data,
+                        [key]: value.checked
+                    }
+                }
                 else
                 {
                     data = {
@@ -154,7 +163,7 @@ const Search = () => {
                 
             }
         }
-
+        console.log(data)
         axios.get("http://"+SERVER_IP+":5000/search_screen", {
             params: {
                 ...data
@@ -233,7 +242,7 @@ const Search = () => {
                             </TableRow>
                             )
                         }
-                        else if(row.key === "Check_In_Date" || row.key === "Check_Out_Date") {
+                        else if(row.key === "From" ) {
                             return(
                                 <TableRow key={row.name}>
                                 <TableCell className={classes.row} align="right">
@@ -246,7 +255,58 @@ const Search = () => {
                                 </TableCell>
                                 <TableCell className={classes.row} align="center">
                                     {/* <TextField id="standard-basic" label={row.key} onChange={(e)=>{handleTextField(e.target.value,row.key)} }/> */}
-                                    <input type="date"  class="standard-basic" id="Check-In" name="Check-In" onChange={(e)=>{handleTextField(e.target.value,row.key)} } placeholder="Enter Your Check-In Date Here" />
+                                    <div 
+                                        style={{display:'flex',alignItems:'baseline',justifyContent:'space-evenly',marginLeft:'20px'}}
+                                    >
+                                        <p style={{margin:"0px"}}>
+                                            From:
+                                        </p>
+                                        <input style={{marginRight:"11px"}} type="date"  class="standard-basic" id="Check-In" name="Check-In" onChange={(e)=>{handleTextField(e.target.value,row.key)} } placeholder="Enter Your Check-In Date Here" />
+                                    </div>
+                                </TableCell>
+                                </TableRow>
+                            )
+                        }
+                        else if( row.key === "To") {
+                            return(
+                                <TableRow key={row.name}>
+                                <TableCell className={classes.row} align="right">
+                                    <Checkbox
+                                    defaultChecked= {false}
+                                    color="default"
+                                    inputProps={{ 'aria-label': 'checkbox with default color' }}
+                                    onChange={(e)=>{handleCheckBox(e.target.checked,row.key)}}
+                                />
+                                </TableCell>
+                                <TableCell className={classes.row} align="center">
+                                    {/* <TextField id="standard-basic" label={row.key} onChange={(e)=>{handleTextField(e.target.value,row.key)} }/> */}
+                                    <div 
+                                        style={{display:'flex',alignItems:'baseline',justifyContent:'space-evenly',marginLeft:'10px'}}
+                                    >
+                                        <p style={{margin:"0px"}}>
+                                            To:
+                                        </p>
+                                        <input type="date"  class="standard-basic" id="Check-In" name="Check-In" onChange={(e)=>{handleTextField(e.target.value,row.key)} } placeholder="Enter Your Check-In Date Here" />
+                                    </div>
+                                </TableCell>
+                                </TableRow>
+                            )
+                        }
+                        else if(row.key === "Non_Checked_Out") {
+                            let name= "Non checked out"
+                            return(
+                                <TableRow key={row.name}>
+                                <TableCell className={classes.row} align="right">
+                                    <Checkbox
+                                    defaultChecked= {false}
+                                    color="default"
+                                    inputProps={{ 'aria-label': 'checkbox with default color' }}
+                                    onChange={(e)=>{handleCheckBox(e.target.checked,row.key)}}
+                                />
+                                </TableCell>
+                                <TableCell className={classes.row} align="center">
+                                    {/* <TextField id="standard-basic" label={row.key} /> */}
+                                    <p style={{fontSize:"20px",paddingRight:"50px"}}>{name}</p>
                                 </TableCell>
                                 </TableRow>
                             )
