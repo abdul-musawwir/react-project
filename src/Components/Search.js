@@ -201,6 +201,7 @@ const Search = () => {
         var storageId = "parms" + String(Date.now());
         sessionStorage.setItem(storageId, parms);
         window.open('/generatepdf' + "?sid=" + storageId);
+        sessionStorage.removeItem(storageId)
     }
 
     return(

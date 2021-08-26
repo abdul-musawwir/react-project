@@ -30,10 +30,6 @@ const styles = StyleSheet.create({
       width: 100,
       height: 90
   },
-  imageShow:{
-    width: 200,
-    height: 100
-  },
   line: {
       margin: 10,
       height: 5,
@@ -47,7 +43,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const DocDownload = ({data,time}) => (
+const DocDownloadRegular = ({data,time}) => (
   <Document>
     <Page size="A4" style={styles.page} wrap>
     <View style={styles.head}>
@@ -55,24 +51,23 @@ const DocDownload = ({data,time}) => (
             <Text style={styles.heading}> Products Limited</Text>
             <Image style={styles.image} src="./logo.png" alt="null" />
         </View>
-        <Text style={styles.subheading} >Outsider Visitor Record</Text>
+        <Text style={styles.subheading} >Regular Visitor Record</Text>
         <Text style={styles.generate} >Generated on: {time}</Text>
         <Text style={styles.line} ></Text>
       {data.map((item)=>(
           <View style={styles.section} wrap={false}>
+          <Text>Profession: {item.profession}</Text>
           <Text>Name:{item.name}</Text>
           <Text>CNIC: {item.cnic}</Text>
-          <Text>Person Count: {item.Person_Count}</Text>
-          <Text>Organization Name: {item.organization_name}</Text>
-          <Text>Check In Date: {item.Check_In_Date}</Text>
-          <Text>Check Out Date: {item.Check_Out_Date}</Text>
-          <Text>Contact Person: {item.Contact_Person}</Text>
-          <Text>Visit Purpose: {item.Visit_Purpose}</Text>
-          <Text>Picture: </Text>{item.picture?<Image style={styles.imageShow} src={item.picture} alt="null" />:<Text>No Picture</Text>}
+          <Text>Additional Information: {item.additional_info}</Text>
+          <Text>Timings: </Text>
+          {item.timing.map((date)=>{
+            return(<Text>{date}</Text>)
+          })}
         </View>
       ))}
     </Page>
   </Document>
 );
 
-export default DocDownload;
+export default DocDownloadRegular;
