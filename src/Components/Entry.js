@@ -7,6 +7,7 @@ import {  useHistory} from 'react-router-dom'
 import CancelIcon from '@material-ui/icons/Cancel';
 // import WebcamCapture from './utils/webcamComp'
 import InputMask from 'react-input-mask'
+import { TramTwoTone } from '@material-ui/icons'
 // import ReplayIcon from '@material-ui/icons/Replay';
 
 const Entry = (props) => {
@@ -30,58 +31,86 @@ const Entry = (props) => {
   
 
   const clickHandler = () => {
+    var valid = false;
+    var innerPerCountWrong = true;
+    var innerCNICWrong = true;
+    var innerContactNoWrong = true;
     if (perCount < 0 && perCount != null ){
       setPerCountWorng("Negative person count can not be entered")
+      innerPerCountWrong = true;
     }
     else {
       setPerCountWorng(null)
+      innerPerCountWrong = false;
     }
     if (cnic != null && cnic.length !== 15) {
       setCnicWrong("Incomplete CNIC")
+      innerCNICWrong = true
     }
     else {
       setCnicWrong(null)
+      innerCNICWrong = false
     }
     if (contactNo != null && contactNo.match(/^\+?[0-9]\d{1,14}$/) == null){
       setContactNoWrong("Wrong Contact No")
+      innerContactNoWrong = true
     }
     else {
       setContactNoWrong(null)
+      innerContactNoWrong = false
     }
     if (cnic != null &&
-        cnicWrong == null &&
+        innerCNICWrong === false &&
         PropName != null &&
         perCount != null &&
-        perCountWrong == null &&
+        innerPerCountWrong === false &&
         NoOrg != null &&
         contactNo != null &&
-        contactNoWrong == null &&
+        innerContactNoWrong == false &&
         contactPer != null &&
         purpose != null //&&
         // picture != null 
         ){
-        axios.post("http://"+SERVER_IP+":5000/data_handling", {
-          "name":PropName,
-          "cnic":cnic,
-          "Person_Count":perCount,
-          "organization_name":NoOrg,
-          "contact" : contactNo,
-          "Check_In_Date" : moment().format().slice(0,-6),
-          "Check_Out_Date" : "",
-          "Contact_Person" : contactPer,
-          "Visit_Purpose" : purpose,
-          // "picture" : picture,
-          
-        }).then(res => {
-          alert("Successfully inserted");
-          history.push('/')
-      }).catch(err => {
-          alert("Data Insertion failed! Please try again.");
-      })
       setIsValid(true)
+      valid = true
     }
     else{
       setIsValid(false)
+      valid = false
+    }
+
+
+    if(valid === true){
+      axios.post("http://"+SERVER_IP+":5000/data_handling", {
+        "name":PropName,
+        "cnic":cnic,
+        "Person_Count":perCount,
+        "organization_name":NoOrg,
+        "contact" : contactNo,
+        "Check_In_Date" : moment().format().slice(0,-6),
+        "Check_Out_Date" : "",
+        "Contact_Person" : contactPer,
+        "Visit_Purpose" : purpose,
+        // "picture" : picture,
+        
+      }).then(res => {
+        alert("Successfully inserted");
+        history.push('/')
+    }).catch(err => {
+        alert("Data Insertion failed! Please try again.");
+    })
+      // let data = {
+      //   "name":PropName,
+      //   "cnic":cnic,
+      //   "person_count":perCount,
+      //   "name_of_organization":NoOrg,
+      //   "contact_number" : contactNo,
+      //   "check_in_datetime" : moment().format().slice(0,-6),
+      //   "check_out_datetime" : "",
+      //   "contact_person" : contactPer,
+      //   "contact_purpose" : purpose,
+      //   "picture" : picture,
+      // }
     }
     
   }
