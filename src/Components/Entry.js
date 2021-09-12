@@ -27,7 +27,9 @@ const Entry = (props) => {
   const [perCountWrong, setPerCountWorng] = useState(null)
   const [contactNoWrong, setContactNoWrong] = useState(null)
   
-  const checkValid = () => {
+  
+
+  const clickHandler = () => {
     if (perCount < 0 && perCount != null ){
       setPerCountWorng("Negative person count can not be entered")
     }
@@ -58,47 +60,30 @@ const Entry = (props) => {
         purpose != null //&&
         // picture != null 
         ){
+        axios.post("http://"+SERVER_IP+":5000/data_handling", {
+          "name":PropName,
+          "cnic":cnic,
+          "Person_Count":perCount,
+          "organization_name":NoOrg,
+          "contact" : contactNo,
+          "Check_In_Date" : moment().format().slice(0,-6),
+          "Check_Out_Date" : "",
+          "Contact_Person" : contactPer,
+          "Visit_Purpose" : purpose,
+          // "picture" : picture,
+          
+        }).then(res => {
+          alert("Successfully inserted");
+          history.push('/')
+      }).catch(err => {
+          alert("Data Insertion failed! Please try again.");
+      })
       setIsValid(true)
     }
     else{
       setIsValid(false)
     }
-  }
-
-  const clickHandler = () => {
-    checkValid();
-    if(isValid === true){
-      axios.post("http://"+SERVER_IP+":5000/data_handling", {
-        "name":PropName,
-        "cnic":cnic,
-        "Person_Count":perCount,
-        "organization_name":NoOrg,
-        "contact" : contactNo,
-        "Check_In_Date" : moment().format().slice(0,-6),
-        "Check_Out_Date" : "",
-        "Contact_Person" : contactPer,
-        "Visit_Purpose" : purpose,
-        // "picture" : picture,
-        
-      }).then(res => {
-        alert("Successfully inserted");
-        history.push('/')
-    }).catch(err => {
-        alert("Data Insertion failed! Please try again.");
-    })
-      // let data = {
-      //   "name":PropName,
-      //   "cnic":cnic,
-      //   "person_count":perCount,
-      //   "name_of_organization":NoOrg,
-      //   "contact_number" : contactNo,
-      //   "check_in_datetime" : moment().format().slice(0,-6),
-      //   "check_out_datetime" : "",
-      //   "contact_person" : contactPer,
-      //   "contact_purpose" : purpose,
-      //   "picture" : picture,
-      // }
-    }
+    
   }
 
  
