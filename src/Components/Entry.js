@@ -25,7 +25,10 @@ const Entry = (props) => {
   const [isValid,setIsValid] = useState(null)
   const [cnicWrong,setCnicWrong] = useState(null)
   
-  const checkValid = () => {
+  
+
+  const clickHandler = () => {
+    var valid = false
     if (cnic != null &&
         cnic.length === 15 &&
         PropName != null &&
@@ -36,16 +39,14 @@ const Entry = (props) => {
         purpose != null &&
         picture != null ){
       setIsValid(true)
+      valid = true
     }
     else{
       setIsValid(false)
+      valid = false
       setCnicWrong("Incomplete CNIC")
     }
-  }
-
-  const clickHandler = () => {
-    checkValid();
-    if(isValid === true){
+    if(valid === true){
       axios.post("http://"+SERVER_IP+":5000/data_handling", {
         "name":PropName,
         "cnic":cnic,
