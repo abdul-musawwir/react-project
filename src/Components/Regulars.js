@@ -79,7 +79,7 @@ export default function Regulars() {
     }
 
     const clickHandler = () => {
-        axios.post("http://"+SERVER_IP+":5000/regular", {
+        axios.post("http://"+SERVER_IP+"/regular", {
             "profession":profession,
             "name":name,
             "cnic":cnic,
@@ -104,7 +104,7 @@ export default function Regulars() {
             }
         }
         console.log(data)
-        axios.get("http://"+SERVER_IP+":5000/regular", {
+        axios.get("http://"+SERVER_IP+"/regular", {
             params: {
                 ...data
             }

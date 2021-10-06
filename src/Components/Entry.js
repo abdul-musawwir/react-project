@@ -47,7 +47,7 @@ const Entry = (props) => {
       setCnicWrong("Incomplete CNIC")
     }
     if(valid === true){
-      axios.post("http://"+SERVER_IP+":5000/data_handling", {
+      axios.post("http://"+SERVER_IP+"/data_handling", {
         "name":PropName,
         "cnic":cnic,
         "Person_Count":perCount,

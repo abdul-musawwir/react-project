@@ -164,7 +164,7 @@ const Search = () => {
             }
         }
         console.log(data)
-        axios.get("http://"+SERVER_IP+":5000/search_screen", {
+        axios.get("http://"+SERVER_IP+"/search_screen", {
             params: {
                 ...data
             }

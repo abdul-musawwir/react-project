@@ -14,7 +14,7 @@ const Home = () => {
     const [total, setTotal] = useState(0)
 
     useEffect(()=>{
-        axios.get("http://"+SERVER_IP+":5000/home_screen_renderer",{
+        axios.get("http://"+SERVER_IP+"/home_screen_renderer",{
                 params: {
                     date: moment().format().slice(0,-15),
                 }
@@ -33,7 +33,7 @@ const Home = () => {
         if (seconds > 0) {
           setTimeout(() => setSeconds(seconds - 1), 1000);
         } else {
-            axios.get("http://"+SERVER_IP+":5000/home_screen_renderer",{
+            axios.get("http://"+SERVER_IP+"/home_screen_renderer",{
                 params: {
                     date: moment().format().slice(0,-15),
                 }

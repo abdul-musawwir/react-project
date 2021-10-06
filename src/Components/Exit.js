@@ -53,7 +53,7 @@ const Exit = () => {
 
 
       const handleCheckout = (row) => {
-        axios.post("http://"+SERVER_IP+":5000/checkout_screen", {
+        axios.post("http://"+SERVER_IP+"/checkout_screen", {
             body: {
                 Check_In_Date: row.Check_In_Date,
                 Check_Out_Date: moment().format().slice(0,-6),
@@ -69,7 +69,7 @@ const Exit = () => {
       }
 
     useEffect(()=>{
-        axios.get("http://"+SERVER_IP+":5000/checkout_screen", {
+        axios.get("http://"+SERVER_IP+"/checkout_screen", {
             params: {
                 date: moment().format().slice(0,-15),
             }

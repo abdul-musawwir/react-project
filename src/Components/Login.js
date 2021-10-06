@@ -8,7 +8,7 @@ export default function Login ({setToken}){
     const [password,setPassword] = useState(null)
 
     async function loginUser(credentials) {
-        return fetch('http://'+SERVER_IP+':5000/login', {
+        return fetch('http://'+SERVER_IP+'/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
