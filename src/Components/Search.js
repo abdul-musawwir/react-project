@@ -191,7 +191,7 @@ const Search = () => {
         { id: 'Check_Out_Date', label: 'Check\u00a0Out\u00a0Date\u00a0and\u00a0Time', minWidth: 100 },
         { id: 'Contact_Person', label: 'Contact Person', minWidth: 100 },
         { id: 'Visit_Purpose', label: 'Visit Purpose', minWidth: 100 },
-        { id: 'picture', label: 'Image', minWidth: 100 },
+        // { id: 'picture', label: 'Image', minWidth: 100 },
       ];
 
 
@@ -375,20 +375,20 @@ const Search = () => {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                 {columns.map((column) => {
                                     const value = row[column.id];
-                                    if (column.id === "picture"){
-                                        return(<TableCell key={column.id} align={column.align}>
+                                    // if (column.id === "picture"){
+                                    //     return(<TableCell key={column.id} align={column.align}>
                                             
-                                            <Popup image={value}></Popup>
-                                            {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
-                                        </TableCell>)
-                                    }
-                                    else {
+                                    //         <Popup image={value}></Popup>
+                                    //         {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                    //     </TableCell>)
+                                    // }
+                                    // else {
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {column.format && typeof value === 'number' ? column.format(value) : value}
                                             </TableCell>
                                             );
-                                    }
+                                    // }
                                     
                                 })}
                                 </TableRow>

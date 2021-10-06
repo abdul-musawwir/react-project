@@ -5,9 +5,9 @@ import { SERVER_IP } from './constants'
 import "./Entry.css"
 import {  useHistory} from 'react-router-dom'
 import CancelIcon from '@material-ui/icons/Cancel';
-import WebcamCapture from './utils/webcamComp'
+// import WebcamCapture from './utils/webcamComp'
 import InputMask from 'react-input-mask'
-import ReplayIcon from '@material-ui/icons/Replay';
+// import ReplayIcon from '@material-ui/icons/Replay';
 
 const Entry = (props) => {
   // const location = useLocation()
@@ -21,7 +21,7 @@ const Entry = (props) => {
   // const [checkOut,setCheckOut] = useState(null)
   const [contactPer,setcontactPer] = useState(null)
   const [purpose,setPurpose] = useState(null)
-  const [picture,setPicture] = useState(null)
+  // const [picture,setPicture] = useState(null)
   const [isValid,setIsValid] = useState(null)
   const [cnicWrong,setCnicWrong] = useState(null)
   
@@ -36,8 +36,10 @@ const Entry = (props) => {
         NoOrg != null &&
         contactNo != null &&
         contactPer != null &&
-        purpose != null &&
-        picture != null ){
+        purpose != null 
+        // &&
+        // picture != null 
+        ){
       setIsValid(true)
       valid = true
     }
@@ -57,7 +59,7 @@ const Entry = (props) => {
         "Check_Out_Date" : "",
         "Contact_Person" : contactPer,
         "Visit_Purpose" : purpose,
-        "picture" : picture,
+        // "picture" : picture,
         
       }).then(res => {
         alert("Successfully inserted");
@@ -129,7 +131,7 @@ const Entry = (props) => {
     <label for="Purpose" class="form-label"><b>Purpose of Visit</b></label>
     <input type="text" onChange={e=>setPurpose(e.target.value)} class="form-control" id="Purpose" name="Purpose" placeholder="Enter Your Purpose of Visit Here"/>
   </div>
-  <div class="mb-3" >
+  {/* <div class="mb-3" >
     <label for="Picture" class="form-label"><b>Picture</b></label>
     <ReplayIcon style={{position:"absolute", marginLeft:"11rem",color:"white"}} onClick={()=>{setPicture(null)}} />
     {isValid === false?<p class="incomplete" >Incomplete data entered</p>:null}
@@ -144,14 +146,15 @@ const Entry = (props) => {
     </div>
     
     
-  </div>
+  </div> */}
   
   <button 
   style= {{
     flex: "content",
      marginLeft: "600px",
-     position:"absolute",
-     marginTop:"-70px", 
+     position:"relative",
+     marginTop:"10px",
+     marginBottom: "10px", 
      width:"150px",
      height:"50px", 
      fontSize:"25px",

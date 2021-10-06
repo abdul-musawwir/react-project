@@ -12,14 +12,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import './Exit.css'
-import Popup from './utils/Popup';
+// import Popup from './utils/Popup';
 
 
 const columns = [
     { id: 'name', label: 'Name', minWidth: 170 },
     { id: 'cnic', label: 'CNIC', minWidth: 100 },
     { id: 'Check_In_Date', label: 'Check\u00a0In\u00a0Date\u00a0and\u00a0Time', minWidth: 100 },
-    { id: 'picture', label: 'Image', minWidth: 100 },
+    // { id: 'picture', label: 'Image', minWidth: 100 },
     { id: 'checkout', label: 'Checkout', minWidth: 100 },
   ];
 
@@ -107,13 +107,14 @@ const Exit = () => {
                             <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                             {columns.map((column) => {
                                 const value = row[column.id];
-                                if (column.id === "picture"){
-                                    return(<TableCell key={column.id} align={column.align}>
+                                // if (column.id === "picture"){
+                                //     return(<TableCell key={column.id} align={column.align}>
                                         
-                                        <Popup image={value}></Popup>
-                                    </TableCell>)
-                                }
-                                else if (column.id === "checkout"){
+                                //         <Popup image={value}></Popup>
+                                //     </TableCell>)
+                                // }
+                                // else 
+                                if (column.id === "checkout"){
                                     return(<TableCell key={column.id} align={column.align}>
                                         <a class="checkout" onClick={()=>handleCheckout(row)} > Checkout</a>
                                        
